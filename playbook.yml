@@ -2,6 +2,8 @@
 - name: Update web servers
   hosts: localhost
   remote_user: root
+  become: yes  
+
   tasks:
     - name: Ensure php-pecl-memcache is at the latest version
       ansible.builtin.yum:
@@ -27,6 +29,11 @@
       ansible.builtin.yum:
         name: php
         state: latest
+
+    - name: Ensure blog directory exists
+      file:
+        path: /var/www/html/blog
+        state: directory
 
     - name: Download and unpack latest WordPress
       unarchive:
