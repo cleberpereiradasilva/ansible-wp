@@ -40,16 +40,14 @@
         src: https://wordpress.org/latest.tar.gz
         dest: "/var/www/html"
         remote_src: yes
-        creates: "/var/www/html/blog"
+        creates: "/var/www/html/wordpress"
+    
+    - name: Set ownership
+      shell: "mv /var/www/html/wordpress /var/www/html/blog;"
 
     - name: Set ownership
-      file:
-        path: "/var/www/html"
-        state: directory
-        recurse: yes
-        owner: www-data
-        group: www-data
-
+      shell: "/usr/bin/chown www-data:www-data /var/www/html/ -R;"
+      
     - name: Set permissions for directories
       shell: "/usr/bin/find /var/www/html/blog/ -type d -exec chmod 750 {} \\;"
 
