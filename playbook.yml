@@ -3,43 +3,34 @@
   hosts: localhost
   remote_user: root
   tasks:
-    - name: Ensure apache is at the latest version
-      ansible.builtin.yum:
-        name: nmap
-        state: latest
-
-  tasks:
-    - name: Ensure mysql is at the latest version
-      ansible.builtin.yum:
-        name: mysql
-        state: latest
-
-  tasks:
     - name: Ensure php-pecl-memcache is at the latest version
       ansible.builtin.yum:
         name: php-pecl-memcache
         state: latest
-    
-  tasks:
+
     - name: Ensure amazon-efs-utils is at the latest version
       ansible.builtin.yum:
         name: amazon-efs-utils
         state: latest
 
-  tasks:
     - name: Ensure curl is at the latest version
       ansible.builtin.yum:
         name: curl
         state: latest
 
-  tasks:
     - name: Ensure nginx is at the latest version
       ansible.builtin.yum:
         name: nginx
         state: latest
-  
-  tasks:
-    - name: Ensure php7.4 is at the latest version
+
+    - name: Ensure php is at the latest version
       ansible.builtin.yum:
-        name: php7.4
+        name: php
         state: latest
+
+    - name: Download and unpack latest WordPress
+      unarchive:
+        src: https://wordpress.org/latest.tar.gz
+        dest: "/var/www/html"
+        remote_src: yes
+        creates: "/var/www/html/wordpress"
