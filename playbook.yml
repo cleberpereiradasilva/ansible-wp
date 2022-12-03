@@ -30,11 +30,6 @@
         name: php
         state: latest
 
-    - name: Ensure blog directory exists
-      file:
-        path: /var/www/html/blog
-        state: directory
-
     - name: Download and unpack latest WordPress
       unarchive:
         src: https://wordpress.org/latest.tar.gz
@@ -51,7 +46,7 @@
         dest: "/var/www/html/blog/wp-config.php"
 
     - name: Set ownership
-      shell: "/usr/bin/chown -R www-data:www-data /var/www/html"
+      shell: "/usr/bin/chown -R apache:apache /var/www/html"
       
     - name: Set permissions for directories
       shell: "/usr/bin/find /var/www/html/blog/ -type d -exec chmod 750 {} \\;"
