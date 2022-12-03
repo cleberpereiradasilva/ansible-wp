@@ -43,10 +43,15 @@
         creates: "/var/www/html/wordpress"
     
     - name: Set ownership
-      shell: "mv /var/www/html/wordpress /var/www/html/blog;"
+      shell: "mv /var/www/html/wordpress/ /var/www/html/blog"
+
+    - name: Set up wp-config
+      template:
+        src: "files/wp-config.php.j2"
+        dest: "/var/www/html/blog/wp-config.php"
 
     - name: Set ownership
-      shell: "/usr/bin/chown www-data:www-data /var/www/html/ -R;"
+      shell: "/usr/bin/chown -R www-data:www-data /var/www/html"
       
     - name: Set permissions for directories
       shell: "/usr/bin/find /var/www/html/blog/ -type d -exec chmod 750 {} \\;"
@@ -54,8 +59,5 @@
     - name: Set permissions for files
       shell: "/usr/bin/find /var/www/html/blog/ -type f -exec chmod 640 {} \\;"
 
-    - name: Set up wp-config
-      template:
-        src: "files/wp-config.php.j2"
-        dest: "/var/www/html/blog/wp-config.php"
+    
     
