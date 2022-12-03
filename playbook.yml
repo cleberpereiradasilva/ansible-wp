@@ -21,9 +21,7 @@
         state: latest
 
     - name: Ensure nginx is at the latest version
-      ansible.builtin.yum:
-        name: nginx
-        state: latest
+      shell: "amazon-linux-extras install nginx1"
 
     - name: Ensure php is at the latest version
       ansible.builtin.yum:
