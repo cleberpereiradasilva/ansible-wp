@@ -84,26 +84,13 @@
     - name: Set permissions for files
       shell: "/usr/bin/find /var/www/html/blog/ -type f -exec chmod 640 {} \\;"
 
-  handlers:
-    - name: Reload Nginx
-      service:
-        name: nginx
-        state: reloaded
+    - name: Load services
+      shell: "systemctl start php-fpm; systemctl start nginx"
 
-    - name: Restart Nginx
-      service:
-        name: nginx
-        state: restarted
+    - name: Reload services
+      shell: "systemctl restart php-fpm; systemctl restart nginx"
 
-    - name: Reload php-fpm
-      service:
-        name: php-fpm
-        state: reloaded
-
-    - name: Restart php-fpm
-      service:
-        name: php-fpm
-        state: restarted
+  
 
     
     
