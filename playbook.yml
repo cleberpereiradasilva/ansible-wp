@@ -60,6 +60,11 @@
         src: "files/nginx.conf.j2"
         dest: "/etc/nginx/nginx.conf"
 
+     - name: Sets Blog conf file
+      template:
+        src: "files/blog.conf.j2"
+        dest: "/etc/nginx/sites-available/blog.conf"
+
     - name: Enables new site
       file:
         src: "/etc/nginx/sites-available/blog.conf"
