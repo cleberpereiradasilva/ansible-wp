@@ -24,11 +24,15 @@
       shell: "amazon-linux-extras install nginx1"
 
     - name: Ensure php is at the latest version
-      ansible.builtin.yum:
-        name: php
-        state: latest
+      shell: "amazon-linux-extras install epel-release;yum update -y;yum repolist;"
 
-    
+    - name: Ensure php is at the latest version
+      shell: "amazon-linux-extras install php7.4;"
+
+    - name: Ensure php-fpm is at the latest version
+      ansible.builtin.yum:
+        name: php-fpm
+        state: latest
 
     - name: Download and unpack latest WordPress
       unarchive:
@@ -89,6 +93,16 @@
     - name: Restart Nginx
       service:
         name: nginx
+        state: restarted
+
+    - name: Reload php-fpm
+      service:
+        name: php-fpm
+        state: reloaded
+
+    - name: Restart php-fpm
+      service:
+        name: php-fpm
         state: restarted
 
     
