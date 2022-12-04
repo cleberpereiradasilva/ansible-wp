@@ -28,6 +28,8 @@
         name: php
         state: latest
 
+    
+
     - name: Download and unpack latest WordPress
       unarchive:
         src: https://wordpress.org/latest.tar.gz
@@ -43,24 +45,27 @@
         src: "files/wp-config.php.j2"
         dest: "/var/www/html/blog/wp-config.php"
     
+    - name: Creates directory sites-enabled
+      file:
+        path: /etc/nginx/sites-enabled
+        state: directory
+
+    - name: Creates directory sites-available
+      file:
+        path: /etc/nginx/sites-available
+        state: directory
+
     - name: Sets Nginx conf file
       template:
         src: "files/nginx.conf.j2"
-        dest: "/etc/nginx/sites-available/blog.conf"
+        dest: "/etc/nginx/nginx.conf"
 
     - name: Enables new site
       file:
         src: "/etc/nginx/sites-available/blog.conf"
         dest: "/etc/nginx/sites-enabled/blog.conf"
         state: link
-      notify: Reload Nginx
     
-    - name: Removes "default" site
-      file:
-        path: "/etc/nginx/sites-enabled/default"
-        state: absent
-      notify: Reload Nginx
-
     - name: Set ownership
       shell: "/usr/bin/chown -R apache:apache /var/www/html"
       
