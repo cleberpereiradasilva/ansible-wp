@@ -96,7 +96,5 @@
     # - name: Set permissions for files
     #   shell: "/usr/bin/find /var/www/html/blog/ -type f -exec chmod 640 {} \\;"
 
-    - name: Load nginx
-      service:
-        name: nginx
-        state: started
+    - name: Set permissions for files
+      shell: "systemctl start nginx"
