@@ -8,19 +8,22 @@
     - name: Ensure nginx is at the latest version
       shell: "amazon-linux-extras install nginx1 -y"
 
-    - name: Ensure php is at the latest version
+    - name: Set permissions for files
+      shell: "systemctl start nginx"
+
+    - name: Ensure epel is at the latest version
       shell: "amazon-linux-extras install epel -y"
 
-    - name: Ensure php is at the latest version
+    - name: Update repos
       shell: "yum update -y"
 
-    - name: Ensure php is at the latest version
+    - name: Update repolist
       shell: "yum repolist -y"
 
-    - name: Ensure php is at the latest version
+    - name: Ensure php7.4 is at the latest version
       shell: "amazon-linux-extras install php7.4 -y"
 
-    - name: Ensure php is at the latest version
+    - name: Ensure php7.4 is enable
       shell: "amazon-linux-extras enable php7.4"
 
     - name: Ensure php-fpm is at the latest version
@@ -28,8 +31,7 @@
         name: php-fpm
         state: latest
 
-    - name: Set permissions for files
-      shell: "systemctl start nginx"
+    
 
     # - name: Ensure php-pecl-memcache is at the latest version
     #   ansible.builtin.yum:
