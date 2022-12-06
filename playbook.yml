@@ -31,6 +31,10 @@
         name: php-fpm
         state: latest
 
+    - name: Creates directory /var/www/html
+      file:
+        path: /var/www/html
+        state: directory
 
     - name: Download and unpack latest WordPress
       unarchive:
