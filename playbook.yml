@@ -95,7 +95,7 @@
     - name: Load services
       shell: "service nginx start"
 
-     - name: Load services
+    - name: Load services
       shell: "service nginx restart"
 
   
