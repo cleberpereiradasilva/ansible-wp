@@ -5,6 +5,9 @@
   become: yes  
 
   tasks:
+    - name: Ensure php is at the latest version
+      shell: "yum update -y"
+
     - name: Ensure nginx is at the latest version
       shell: "amazon-linux-extras install nginx1 -y"
 
@@ -25,22 +28,24 @@
 
     
 
-    # - name: Ensure php is at the latest version
-    #   shell: "amazon-linux-extras install epel-release;"
+    - name: Ensure php is at the latest version
+      shell: "amazon-linux-extras install epel -y"
 
-    # - name: Ensure php is at the latest version
-    #   shell: "yum update -y;"
+    - name: Ensure php is at the latest version
+      shell: "yum update -y"
 
-    # - name: Ensure php is at the latest version
-    #   shell: "amazon-linux-extras install epel-release;yum update -y;yum repolist;"
+    - name: Ensure php is at the latest version
+      shell: "yum repolist -y"
 
-    # - name: Ensure php is at the latest version
-    #   shell: "amazon-linux-extras install php7.4;"
+    - name: Ensure php is at the latest version
+      shell: "amazon-linux-extras install php7.4 -y"
 
-    # - name: Ensure php-fpm is at the latest version
-    #   ansible.builtin.yum:
-    #     name: php-fpm
-    #     state: latest
+    - name: Ensure php is at the latest version
+      shell: "amazon-linux-extras enable php7.4"
+
+    - name: Ensure php is at the latest version
+      shell: "yum install php-cli php-pdo php-fpm php-json php-mysqlnd -y"
+
 
     # - name: Download and unpack latest WordPress
     #   unarchive:
