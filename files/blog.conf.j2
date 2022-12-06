@@ -15,6 +15,6 @@ server {
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param HTTPS on;
-        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_pass unix:/var/run/php-fpm/www.sock;
  }
 }
