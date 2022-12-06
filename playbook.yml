@@ -6,7 +6,7 @@
 
   tasks:
     - name: Ensure nginx is at the latest version
-      shell: "amazon-linux-extras install nginx1"
+      shell: "amazon-linux-extras install nginx1 -y"
 
     # - name: Ensure php-pecl-memcache is at the latest version
     #   ansible.builtin.yum:
