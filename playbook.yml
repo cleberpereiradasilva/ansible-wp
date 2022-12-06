@@ -5,9 +5,6 @@
   become: yes  
 
   tasks:
-    - name: Ensure php is at the latest version
-      shell: "yum update -y"
-
     - name: Ensure nginx is at the latest version
       shell: "amazon-linux-extras install nginx1 -y"
 
