@@ -5,90 +5,98 @@
   become: yes  
 
   tasks:
-    - name: Ensure php-pecl-memcache is at the latest version
-      ansible.builtin.yum:
-        name: php-pecl-memcache
-        state: latest
-
-    - name: Ensure amazon-efs-utils is at the latest version
-      ansible.builtin.yum:
-        name: amazon-efs-utils
-        state: latest
-
-    - name: Ensure curl is at the latest version
-      ansible.builtin.yum:
-        name: curl
-        state: latest
-
     - name: Ensure nginx is at the latest version
       shell: "amazon-linux-extras install nginx1"
 
-    - name: Ensure php is at the latest version
-      shell: "amazon-linux-extras install epel-release;yum update -y;yum repolist;"
+    # - name: Ensure php-pecl-memcache is at the latest version
+    #   ansible.builtin.yum:
+    #     name: php-pecl-memcache
+    #     state: latest
 
-    - name: Ensure php is at the latest version
-      shell: "amazon-linux-extras install php7.4;"
+    # - name: Ensure amazon-efs-utils is at the latest version
+    #   ansible.builtin.yum:
+    #     name: amazon-efs-utils
+    #     state: latest
 
-    - name: Ensure php-fpm is at the latest version
-      ansible.builtin.yum:
-        name: php-fpm
-        state: latest
+    # - name: Ensure curl is at the latest version
+    #   ansible.builtin.yum:
+    #     name: curl
+    #     state: latest
 
-    - name: Download and unpack latest WordPress
-      unarchive:
-        src: https://wordpress.org/latest.tar.gz
-        dest: "/var/www/html"
-        remote_src: yes
-        creates: "/var/www/html/wordpress"
     
-    - name: Set ownership
-      shell: "mv /var/www/html/wordpress/ /var/www/html/blog"
 
-    - name: Set up wp-config
-      template:
-        src: "files/wp-config.php.j2"
-        dest: "/var/www/html/blog/wp-config.php"
+    # - name: Ensure php is at the latest version
+    #   shell: "amazon-linux-extras install epel-release;"
+
+    # - name: Ensure php is at the latest version
+    #   shell: "yum update -y;"
+
+    # - name: Ensure php is at the latest version
+    #   shell: "amazon-linux-extras install epel-release;yum update -y;yum repolist;"
+
+    # - name: Ensure php is at the latest version
+    #   shell: "amazon-linux-extras install php7.4;"
+
+    # - name: Ensure php-fpm is at the latest version
+    #   ansible.builtin.yum:
+    #     name: php-fpm
+    #     state: latest
+
+    # - name: Download and unpack latest WordPress
+    #   unarchive:
+    #     src: https://wordpress.org/latest.tar.gz
+    #     dest: "/var/www/html"
+    #     remote_src: yes
+    #     creates: "/var/www/html/wordpress"
     
-    - name: Creates directory sites-enabled
-      file:
-        path: /etc/nginx/sites-enabled
-        state: directory
+    # - name: Set ownership
+    #   shell: "mv /var/www/html/wordpress/ /var/www/html/blog"
 
-    - name: Creates directory sites-available
-      file:
-        path: /etc/nginx/sites-available
-        state: directory
-
-    - name: Sets Nginx conf file
-      template:
-        src: "files/nginx.conf.j2"
-        dest: "/etc/nginx/nginx.conf"
-
-    - name: Sets Blog conf file
-      template:
-        src: "files/blog.conf.j2"
-        dest: "/etc/nginx/sites-available/blog.conf"
-
-    - name: Enables new site
-      file:
-        src: "/etc/nginx/sites-available/blog.conf"
-        dest: "/etc/nginx/sites-enabled/blog.conf"
-        state: link
+    # - name: Set up wp-config
+    #   template:
+    #     src: "files/wp-config.php.j2"
+    #     dest: "/var/www/html/blog/wp-config.php"
     
-    - name: Set ownership
-      shell: "/usr/bin/chown -R apache:apache /var/www/html"
+    # - name: Creates directory sites-enabled
+    #   file:
+    #     path: /etc/nginx/sites-enabled
+    #     state: directory
+
+    # - name: Creates directory sites-available
+    #   file:
+    #     path: /etc/nginx/sites-available
+    #     state: directory
+
+    # - name: Sets Nginx conf file
+    #   template:
+    #     src: "files/nginx.conf.j2"
+    #     dest: "/etc/nginx/nginx.conf"
+
+    # - name: Sets Blog conf file
+    #   template:
+    #     src: "files/blog.conf.j2"
+    #     dest: "/etc/nginx/sites-available/blog.conf"
+
+    # - name: Enables new site
+    #   file:
+    #     src: "/etc/nginx/sites-available/blog.conf"
+    #     dest: "/etc/nginx/sites-enabled/blog.conf"
+    #     state: link
+    
+    # - name: Set ownership
+    #   shell: "/usr/bin/chown -R apache:apache /var/www/html"
       
-    - name: Set permissions for directories
-      shell: "/usr/bin/find /var/www/html/blog/ -type d -exec chmod 750 {} \\;"
+    # - name: Set permissions for directories
+    #   shell: "/usr/bin/find /var/www/html/blog/ -type d -exec chmod 750 {} \\;"
 
-    - name: Set permissions for files
-      shell: "/usr/bin/find /var/www/html/blog/ -type f -exec chmod 640 {} \\;"
+    # - name: Set permissions for files
+    #   shell: "/usr/bin/find /var/www/html/blog/ -type f -exec chmod 640 {} \\;"
 
     - name: Load services
-      shell: "systemctl start php-fpm; systemctl start nginx"
+      shell: "service nginx start"
 
-    - name: Reload services
-      shell: "systemctl restart php-fpm; systemctl restart nginx"
+     - name: Load services
+      shell: "service nginx restart"
 
   
 
