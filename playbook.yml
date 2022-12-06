@@ -43,8 +43,10 @@
     - name: Ensure php is at the latest version
       shell: "amazon-linux-extras enable php7.4"
 
-    - name: Ensure php is at the latest version
-      shell: "yum install php-cli php-pdo php-fpm php-json php-mysqlnd -y"
+    - name: Ensure php-fpm is at the latest version
+      ansible.builtin.yum:
+        name: php-fpm
+        state: latest
 
 
     # - name: Download and unpack latest WordPress
@@ -97,13 +99,7 @@
     # - name: Set permissions for files
     #   shell: "/usr/bin/find /var/www/html/blog/ -type f -exec chmod 640 {} \\;"
 
-    - name: Load services
-      shell: "service nginx start"
-
-    - name: Load services
-      shell: "service nginx restart"
-
-  
-
-    
-    
+    - name: Load nginx
+      service:
+        name: nginx
+        state: started
