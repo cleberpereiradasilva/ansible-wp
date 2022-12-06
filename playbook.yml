@@ -31,73 +31,63 @@
         name: php-fpm
         state: latest
 
+
+    - name: Download and unpack latest WordPress
+      unarchive:
+        src: https://wordpress.org/latest.tar.gz
+        dest: "/var/www/html"
+        remote_src: yes
+        creates: "/var/www/html/wordpress"
     
+    - name: Set ownership
+      shell: "mv /var/www/html/wordpress/ /var/www/html/blog"
 
-    # - name: Ensure php-pecl-memcache is at the latest version
-    #   ansible.builtin.yum:
-    #     name: php-pecl-memcache
-    #     state: latest
-
-    # - name: Ensure amazon-efs-utils is at the latest version
-    #   ansible.builtin.yum:
-    #     name: amazon-efs-utils
-    #     state: latest
-
-    # - name: Ensure curl is at the latest version
-    #   ansible.builtin.yum:
-    #     name: curl
-    #     state: latest
-
-
-
-    # - name: Download and unpack latest WordPress
-    #   unarchive:
-    #     src: https://wordpress.org/latest.tar.gz
-    #     dest: "/var/www/html"
-    #     remote_src: yes
-    #     creates: "/var/www/html/wordpress"
+    - name: Set up wp-config
+      template:
+        src: "files/wp-config.php.j2"
+        dest: "/var/www/html/blog/wp-config.php"
     
-    # - name: Set ownership
-    #   shell: "mv /var/www/html/wordpress/ /var/www/html/blog"
+    - name: Creates directory sites-enabled
+      file:
+        path: /etc/nginx/sites-enabled
+        state: directory
 
-    # - name: Set up wp-config
-    #   template:
-    #     src: "files/wp-config.php.j2"
-    #     dest: "/var/www/html/blog/wp-config.php"
+    - name: Creates directory sites-available
+      file:
+        path: /etc/nginx/sites-available
+        state: directory
+
+    - name: Sets Nginx conf file
+      template:
+        src: "files/nginx.conf.j2"
+        dest: "/etc/nginx/nginx.conf"
+
+    - name: Sets Blog conf file
+      template:
+        src: "files/blog.conf.j2"
+        dest: "/etc/nginx/sites-available/blog.conf"
+
+    - name: Enables new site
+      file:
+        src: "/etc/nginx/sites-available/blog.conf"
+        dest: "/etc/nginx/sites-enabled/blog.conf"
+        state: link
     
-    # - name: Creates directory sites-enabled
-    #   file:
-    #     path: /etc/nginx/sites-enabled
-    #     state: directory
-
-    # - name: Creates directory sites-available
-    #   file:
-    #     path: /etc/nginx/sites-available
-    #     state: directory
-
-    # - name: Sets Nginx conf file
-    #   template:
-    #     src: "files/nginx.conf.j2"
-    #     dest: "/etc/nginx/nginx.conf"
-
-    # - name: Sets Blog conf file
-    #   template:
-    #     src: "files/blog.conf.j2"
-    #     dest: "/etc/nginx/sites-available/blog.conf"
-
-    # - name: Enables new site
-    #   file:
-    #     src: "/etc/nginx/sites-available/blog.conf"
-    #     dest: "/etc/nginx/sites-enabled/blog.conf"
-    #     state: link
-    
-    # - name: Set ownership
-    #   shell: "/usr/bin/chown -R apache:apache /var/www/html"
+    - name: Set ownership
+      shell: "/usr/bin/chown -R apache:apache /var/www/html"
       
-    # - name: Set permissions for directories
-    #   shell: "/usr/bin/find /var/www/html/blog/ -type d -exec chmod 750 {} \\;"
+    - name: Set permissions for directories
+      shell: "/usr/bin/find /var/www/html/blog/ -type d -exec chmod 750 {} \\;"
 
-    # - name: Set permissions for files
-    #   shell: "/usr/bin/find /var/www/html/blog/ -type f -exec chmod 640 {} \\;"
+    - name: Set permissions for files
+      shell: "/usr/bin/find /var/www/html/blog/ -type f -exec chmod 640 {} \\;"
 
-    
+    - name: Load nginx
+      service:
+        name: nginx
+        state: started
+
+    - name: Load php-fpm
+      service:
+        name: php-fpm
+        state: started
